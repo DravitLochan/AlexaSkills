@@ -1,0 +1,7 @@
+welcome: Welcome to the time game. I'm going to say few phrases related to time. Ready?
+
+round: Can you tell the equivalent of {{ numbers|join(", ") }} ?
+
+win: Good job!
+
+lose: Sorry, that's the wrong answer.
