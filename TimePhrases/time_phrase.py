@@ -42,9 +42,9 @@ def next_round():
 			  '56 minute ', '57 minute ', '58 minute ', '59 minute ' ]'''
 	option = randint(0, 2);					# 0 -> half; 1 -> quarter; 2 -> number
 	if option == 0 :
-		firstPhrase = 'half'
+		firstPhrase = 'half hour'
 	elif option == 1 :
-		firstPhrase = 'quarter'
+		firstPhrase = 'quarter '
 	else:
 		minutes = str(randint(1, 59))
 		firstPhrase = minutes + ' minutes '
@@ -66,6 +66,35 @@ def next_round():
 
 	return question(round_msg)
 
+
+@ask.intent("AnswerIntent", convert={'first': int, 'second': int})
+
+def answer(first, second):
+
+	firstPhrase = session.attributes['firstPhrase']
+	secondPhrase = session.attributes['secondPhrase']
+	hour = int(session.attributes['hour'])
+    
+	if(firstPhrase.find('half') != -1) :
+		one = 30
+	elif(firstPhrase.find('quarter') != -1) :
+		one = 15
+	else :
+		one = int(FirstPhrase[:2])
+
+	if(secondPhrase.find('to') != -1) :
+		hour = --hour
+		two = 60 - one
+	else :
+		two = one
+
+	if(hour == 0) :
+		hour = 12
+
+	if(first == one and second == two) :
+		msg = render_template('win')
+	else :
+		msg = render_template('lose')	
 
 if __name__ == '__main__':
 
