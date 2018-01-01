@@ -1,6 +1,6 @@
 welcome: Welcome to the time game. I'm going to say few phrases related to time. Ready?
 
-round: Can you tell the equivalent of {{ question }} ?
+round: Can you tell the equivalent of {{ phrase }} ?
 
 win: Good job!
 
