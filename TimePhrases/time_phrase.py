@@ -42,7 +42,7 @@ def next_round():
 			  '56 minute ', '57 minute ', '58 minute ', '59 minute ' ]'''
 	option = randint(0, 2);					# 0 -> half; 1 -> quarter; 2 -> number
 	if option == 0 :
-		firstPhrase = 'half hour'
+		firstPhrase = 'half hour '
 	elif option == 1 :
 		firstPhrase = 'quarter '
 	else:
@@ -80,7 +80,7 @@ def answer(first, second):
 	elif(firstPhrase.find('quarter') != -1) :
 		one = 15
 	else :
-		one = int(FirstPhrase[:2])
+		one = int(firstPhrase[:2])
 
 	if(secondPhrase.find('to') != -1) :
 		hour = --hour
