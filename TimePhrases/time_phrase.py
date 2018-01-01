@@ -29,16 +29,16 @@ def next_round():
 
 	'''FirstPhrase = ['half ', 'quarter',
 			  '1 minute ', '2 minute ', '3 minute ', '4 minute ', '5 minute '
-			  '6 minute ', '7 minute ', '8 minute ', '9 minute ', '10 minute ', 
-			  '11 minute ', '12 minute ', '13 minute ', '14 minute ', '15 minute ', 
-			  '16 minute ', '17 minute ', '18 minute ', '19 minute ', '20 minute ', 
-			  '21 minute ', '22 minute ', '23 minute ', '24 minute ', '25 minute ', 
-			  '26 minute ', '27 minute ', '28 minute ', '29 minute ', '30 minute ', 
-			  '31 minute ', '32 minute ', '33 minute ', '34 minute ', '35 minute ', 
-			  '36 minute ', '37 minute ', '38 minute ', '39 minute ', '40 minute ', 
-			  '41 minute ', '42 minute ', '43 minute ', '44 minute ', '45 minute ', 
-			  '46 minute ', '47 minute ', '48 minute ', '49 minute ', '50 minute ', 
-			  '51 minute ', '52 minute ', '53 minute ', '54 minute ', '55 minute ', 
+			  '6 minute ', '7 minute ', '8 minute ', '9 minute ', '10 minute ',
+			  '11 minute ', '12 minute ', '13 minute ', '14 minute ', '15 minute ',
+			  '16 minute ', '17 minute ', '18 minute ', '19 minute ', '20 minute ',
+			  '21 minute ', '22 minute ', '23 minute ', '24 minute ', '25 minute ',
+			  '26 minute ', '27 minute ', '28 minute ', '29 minute ', '30 minute ',
+			  '31 minute ', '32 minute ', '33 minute ', '34 minute ', '35 minute ',
+			  '36 minute ', '37 minute ', '38 minute ', '39 minute ', '40 minute ',
+			  '41 minute ', '42 minute ', '43 minute ', '44 minute ', '45 minute ',
+			  '46 minute ', '47 minute ', '48 minute ', '49 minute ', '50 minute ',
+			  '51 minute ', '52 minute ', '53 minute ', '54 minute ', '55 minute ',
 			  '56 minute ', '57 minute ', '58 minute ', '59 minute ' ]'''
 	option = randint(0, 2);					# 0 -> half; 1 -> quarter; 2 -> number
 	if option == 0 :
@@ -46,26 +46,25 @@ def next_round():
 	elif option == 1 :
 		firstPhrase = 'quarter'
 	else:
-		minutes = randint(1, 59)
+		minutes = str(randint(1, 59))
 		firstPhrase = minutes + ' minutes '
 
 	option = randint(0, 1)
-	# secondPhrase = option == 0 ? 'to ' : 'by '
-	secondPhrase = if option == 0 'to ' else 'past '
+	if option == 0 :
+		secondPhrase = 'to '
+	else:
+		secondPhrase = 'past '
 
-	hour = randint(1, 12);
-			  
-    # numbers = [randint(0, 9) for _ in range(3)]
+	hour = str(randint(1, 12))
+	finalPhrase = firstPhrase + secondPhrase + hour
 
-    question = firstPhrase + secondPhrase + hour
+	round_msg = render_template('round', phrase=finalPhrase)
 
-    round_msg = render_template('round', question=question)
+	session.attributes['firstPhrase'] = firstPhrase
+	session.attributes['secondPhrase'] = secondPhrase
+	session.attributes['hour'] = hour
 
-    session.attributes['firstPhrase'] = firstPhrase
-    session.attributes['secondPhrase'] = secondPhrase
-    session.attributes['hour'] = hour
-
-    return question(round_msg)
+	return question(round_msg)
 
 
 if __name__ == '__main__':
