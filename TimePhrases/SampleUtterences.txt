@@ -1,0 +1,6 @@
+YesIntent yes
+YesIntent sure
+YesIntent yep
+YesIntent go on
+AnswerIntent {first} and {second}
+AnswerIntent {first} {second}
