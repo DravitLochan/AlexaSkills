@@ -82,7 +82,7 @@ def set_phrase_in_session(intent, session):
     hour = str(randint(1, 12))
     finalPhrase = firstPhrase + secondPhrase + hour
 
-    session_attributes = {"firstPhrase" : firstPhrase, "secondPhrase" : secondPhrase, "hour" : hour}
+    session_attributes = {"firstPhrase" : firstPhrase, "secondPhrase" : secondPhrase, "hour" : hour, "finalPhrase":finalPhrase}
     speech_output = "Can you tell the equivalent of " + finalPhrase + " ?"
     reprompt_text = "Do you want me to repeat the question?"
     return build_response(session_attributes, build_speechlet_response(
@@ -111,7 +111,7 @@ def check_answer(intent, session):
     if(int(intent['slots']['first']['value']) == hour and int(intent['slots']['second']['value']) == two) :
         speech_output = "Good job!"
     else :
-        speech_output = "Sorry, that's the wrong answer."
+        speech_output = "Sorry, that's the wrong answer. The right answer for " + session['attributes']['finalPhrase'] + " is " + str(hour) + " " + str(two)
     
     should_end_session =True
 
