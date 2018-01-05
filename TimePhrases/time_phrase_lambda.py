@@ -62,7 +62,7 @@ def handle_session_end_request():
 
 def get_help(intent, session):
     card_title = "Help"
-    speech_output="You can play time phrase game with me. Just say start time phrase to start the game and a time phrase will be shouted out. Interpret it correctly to win."
+    speech_output="You can play time phrase game with me. Just say yes to start the game and a time phrase will be shouted out. Interpret it correctly to win. do you want to play the game now?"
     should_end_session=False
     return build_response({}, build_speechlet_response(
         card_title, speech_output, speech_output, should_end_session))
@@ -101,6 +101,15 @@ def set_phrase_in_session(intent, session):
     return build_response({}, build_speechlet_response(
         card_title, speech_output, None, should_end_session))'''
 
+def handle_error(intent, session):
+    card_title = "Time Phrase"
+    speech_output="oh no!! that was something off the track. You can get help to know how to play the game. "
+    if('finalPhrase' in session['attributes']):
+        speech_output = speech_output + "The phrase you were given was " + session['attributes']['finalPhrase']
+    should_end_session=False
+    return build_response(session['attributes'], build_speechlet_response(
+        card_title, speech_output, speech_output, should_end_session))
+
 def check_answer(intent, session):
     card_title = "Results"
     firstPhrase = session['attributes']['firstPhrase']
@@ -121,14 +130,18 @@ def check_answer(intent, session):
     if(hour == 0) :
         hour = 12
 
-    if(int(intent['slots']['first']['value']) == hour and int(intent['slots']['second']['value']) == two) :
-        speech_output = "Good job! " + session['attributes']['finalPhrase'] + " is " + str(hour) + " " + str(two)
-    else :
-        speech_output = "Sorry, that's the wrong answer. The right answer for " + session['attributes']['finalPhrase'] + " is " + str(hour) + ":" + str(two)
-    
-    should_end_session =True
+    if('value' in intent['slots']['first']!= -1 and 'value'in intent['slots']['second'] != -1):
+        if(int(intent['slots']['first']['value']) == hour and int(intent['slots']['second']['value']) == two) :
+            speech_output = "Good job! " + session['attributes']['finalPhrase'] + " is " + str(hour) + " " + str(two)
+        else :
+            speech_output = "Sorry, that's the wrong answer. The right answer for " + session['attributes']['finalPhrase'] + " is " + str(hour) + ":" + str(two)
+        
+        should_end_session =True
+    else:
+        speech_output = "oops! you need to tell the hour first followed by minutes. Let's try again. The phrase is " + session['attributes']['finalPhrase'] + "."
+        should_end_session = False
 
-    return build_response({"first":intent['slots']['first']['value'], "second":intent['slots']['first']['value'], "one":hour, "two":two}, build_speechlet_response(
+    return build_response(session['attributes'], build_speechlet_response(
         card_title, speech_output, speech_output, should_end_session))
 
 # --------------- Events ------------------
@@ -170,7 +183,7 @@ def on_intent(intent_request, session):
     elif intent_name == "AMAZON.CancelIntent" or intent_name == "AMAZON.StopIntent":
         return handle_session_end_request()
     else:
-        raise ValueError("Invalid intent")
+        return handle_error(intent, session)
 
 
 def on_session_ended(session_ended_request, session):
